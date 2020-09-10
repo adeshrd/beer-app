@@ -3,6 +3,11 @@ A simple beer app that randomly displays beers to the user
 
 ---
 
+### Demo
+
+![screendemo.gif](screendemo.gif)
+
+
 ### How to run app
 
 1. ./gradlew build
