@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class BeerServiceTest {
@@ -22,7 +23,7 @@ public class BeerServiceTest {
         Mockito.when(beerRepository.getBeersByNameNot("beer1")).thenReturn(beers);
         BeerService beerService = new BeerService(beerRepository);
 
-        Beer beer = beerService.getRandomBeerInApp("beer1");
-        Assert.assertTrue(beers.contains(beer));
+        Optional<Beer> beer = beerService.getRandomBeerInApp("beer1");
+        Assert.assertTrue(beers.contains(beer.get()));
     }
 }
