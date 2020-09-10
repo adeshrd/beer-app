@@ -11,7 +11,7 @@ A simple beer app that randomly displays beers to the user
 ### How to run app
 
 1. ./gradlew build
-2. java -jar build/lib/beer.jar
+2. java -jar build/libs/beer.jar
 
 
 ### How to run tests
