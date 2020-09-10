@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "moduleResolution": "node",
+    "target": "es6",
+    "lib": ["es5", "es6", "dom"],
+    "allowJs": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "include":["./src/main/resources/static/**/*"],
+  "exclude": [
+    "node_modules",
+    "src/main/resources/static/dist"
+  ]
+}

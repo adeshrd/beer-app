@@ -1,0 +1,90 @@
+import com.moowork.gradle.node.task.NodeTask
+
+buildscript {
+  repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+  }
+}
+
+plugins {
+  id 'org.springframework.boot' version '2.3.3.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+  id 'java'
+}
+
+repositories.whenObjectAdded {
+  if (it instanceof IvyArtifactRepository) {
+    metadataSources {
+      artifact()
+    }
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'com.moowork.node'
+
+node {
+  version = '10.14.1'
+  npmVersion = '6.4.1'
+  download = true
+}
+
+jar {
+  baseName = 'distilled-beer'
+  version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  providedRuntime
+}
+
+dependencies {
+  compile('org.springframework.boot:spring-boot-starter-data-rest')
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+  implementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+  compile 'mysql:mysql-connector-java'
+
+  compile "org.flywaydb:flyway-core:6.0.1"
+
+  //dev
+  annotationProcessor("org.projectlombok:lombok")
+  compileOnly 'org.projectlombok:lombok:1.18.10'
+  compile('org.springframework.boot:spring-boot-devtools')
+
+
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+
+task webpack(type: NodeTask, dependsOn: 'npmInstall') {
+  def osName = System.getProperty("os.name").toLowerCase();
+  if (osName.contains("windows")) {
+    script = project.file('node_modules/webpack/bin/webpack.js')
+  } else {
+    script = project.file('node_modules/.bin/webpack')
+  }
+}
+
+processResources.dependsOn 'webpack'
+
+
+
+clean.delete << file('node_modules')
+clean.delete << file('src/main/resources/static/dist')
+
