@@ -5,13 +5,13 @@ A simple beer app that randomly displays beers to the user
 
 ### How to run app
 
-1. gradlew build
+1. ./gradlew build
 2. java -jar build/lib/beer.jar
 
 
 ### How to run tests
 
-1. gradlew test
+1. ./gradlew test
 
 ### Information
  - Shows beer data along with images using base64 encoding

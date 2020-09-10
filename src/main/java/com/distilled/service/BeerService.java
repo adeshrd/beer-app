@@ -5,12 +5,14 @@ import com.distilled.repository.BeerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class BeerService {
 
     private final BeerRepository beerRepository;
+    private Random rand = new Random();
 
     public BeerService(BeerRepository beerRepository) {
         this.beerRepository = beerRepository;
@@ -22,7 +24,7 @@ public class BeerService {
      * @param beerName The current beer name loaded in UI. Used to fetch a different beer every time
      * @return Beer | null
      */
-    public Beer getRandomBeer(String beerName) {
+    public Optional<Beer> getRandomBeer(String beerName) {
         return beerRepository.getRandomBeer(beerName);
     }
 
@@ -34,11 +36,10 @@ public class BeerService {
      * @param beerName The current beer name loaded in UI. Used to fetch a different beer every time
      * @return Beer | null
      */
-    public Beer getRandomBeerInApp(String beerName) {
+    public Optional<Beer> getRandomBeerInApp(String beerName) {
         List<Beer> beers = beerRepository.getBeersByNameNot(beerName);
-        if (beers.isEmpty()) return  null; // We don't want a BadBound exception later
+        if (beers.isEmpty()) return  Optional.empty(); // We don't want a BadBound exception later
 
-        Random rand = new Random();
-        return beers.get(rand.nextInt(beers.size()));
+        return Optional.of(beers.get(rand.nextInt(beers.size())));
     }
 }

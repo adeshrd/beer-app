@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @Slf4j
 public class BeerController {
@@ -26,12 +28,13 @@ public class BeerController {
      */
     @GetMapping(value = "/api/beer/random")
     public ResponseDTO<BeerDTO> getRandomBeer(@RequestParam("currBeer") String currBeer) {
-        Beer beer = beerService.getRandomBeerInApp(currBeer);
-        if (beer == null) {
+        Optional<Beer> beerOpt = beerService.getRandomBeer(currBeer);
+        if (!beerOpt.isPresent()) {
             log.error("No beers found in the database in getRandomBeer()");
             return new ResponseDTO<BeerDTO>().withError("Sorry! No beers available");
         }
 
+        Beer beer = beerOpt.get();
         BeerDTO beerDTO = BeerDTO.builder()
                 .name(beer.getName())
                 .description(beer.getDescription())
